@@ -1,0 +1,712 @@
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0, user-scalable=no,target-densitydpi=device-dpi,viewport-fit=cover">
+<style type="text/css">
+  body {
+    margin: 0;
+  }
+</style>
+<style type="text/css">
+  .kui-picker {
+    overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+    position: relative;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .kui-picker__shade {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .3);
+    z-index: 10000;
+  }
+
+  .kui-picker__panel {
+    /* display: none; */
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    -webkit-transform: translate3d(0, 100%, 0);
+    -ms-transform: translate3d(0, 100%, 0);
+    -moz-transform: translate3d(0, 100%, 0);
+    -o-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    z-index: 10001;
+  }
+
+  .kui-picker ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .kui-picker__toolbar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    height: 44px;
+    line-height: 44px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    background-color: #fff;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+  }
+
+  .kui-picker__btns {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    padding: 0 15px;
+  }
+
+  .kui-picker__btns>span {
+    padding: 0 10px;
+  }
+
+  .kui-picker__tb {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    position: relative;
+  }
+
+  .kui-picker__frame {
+    top: 88px;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    position: absolute;
+    pointer-events: none;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .kui-picker__tr {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: hidden;
+    font-size: 16px;
+    text-align: center;
+    -webkit-mask-box-image: -webkit-linear-gradient(bottom, transparent, transparent 5%, #fff 20%, #fff 80%, transparent 95%, transparent);
+    -webkit-mask-box-image: linear-gradient(top, transparent, transparent 5%, #fff 20%, #fff 80%, transparent 95%, transparent);
+  }
+
+  .kui-picker__td {
+    padding: 0 5px;
+    color: #969799;
+  }
+
+  .kui-picker__selected {
+
+    color: #333;
+  }
+
+  .kuiPickerFromBottomToUp {
+    display: block;
+    -webkit-animation: KuiPickerFromBottomToUp 400ms forwards;
+    -moz-animation: KuiPickerFromBottomToUp 400ms forwards;
+    -o-animation: KuiPickerFromBottomToUp 400ms forwards;
+    animation: KuiPickerFromBottomToUp 400ms forwards;
+  }
+
+  @keyframes KuiPickerFromBottomToUp {
+    from {
+      -webkit-transform: translate3d(0, 100%, 0);
+      -ms-transform: translate3d(0, 100%, 0);
+      -moz-transform: translate3d(0, 100%, 0);
+      -o-transform: translate3d(0, 100%, 0);
+      transform: translate3d(0, 100%, 0);
+    }
+
+    to {
+      -webkit-transform: translate3d(0, 0, 0);
+      -ms-transform: translate3d(0, 0, 0);
+      -moz-transform: translate3d(0, 0, 0);
+      -o-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+</style>
+
+<body>
+
+  <!--<div class="kui-picker">
+  <div class="kui-picker__shade"></div>
+  <div class="kui-picker__panel kuiPickerFromBottomToUp">
+
+    <div class="kui-picker__toolbar">
+      <div class="kui-picker__btns">取消</div>
+      <div class="kui-picker__btns">
+        <span style="color: #f60;">公历</span>
+        <span>农历</span>
+      </div>
+      <div class="kui-picker__btns">确认</div>
+    </div>
+
+    <div class="kui-picker__tb" style="height: 220px;">
+      <div class="kui-picker__tr" style="height: 220px;">
+        <ul style="transition: 500ms; transform: translate3d(0px, 0px, 0px); line-height: 44px;">
+          <li class="kui-picker__td" style="height: 44px;">2015 年</li>
+          <li class="kui-picker__td" style="height: 44px;">2016 年</li>
+          <li class="kui-picker__td kui-picker__selected" style="height: 44px;">2017
+            年
+          </li>
+          <li class="kui-picker__td" style="height: 44px;">2018 年
+          </li>
+          <li class="kui-picker__td" style="height: 44px;">2019 年</li>
+        </ul>
+      </div>
+      <div class="kui-picker__tr" style="height: 220px;">
+        <ul style="transition: 500ms; transform: translate3d(0px, 0px, 0px); line-height: 44px;">
+          <li class="kui-picker__td" style="height: 44px;">01 月</li>
+          <li class="kui-picker__td" style="height: 44px;">02 月</li>
+          <li class="kui-picker__td kui-picker__selected" style="height: 44px;">03 月
+          </li>
+          <li class="kui-picker__td" style="height: 44px;">04 月</li>
+          <li class="kui-picker__td" style="height: 44px;">05 月</li>
+          <li class="kui-picker__td" style="height: 44px;">06</li>
+          <li class="kui-picker__td" style="height: 44px;">07</li>
+          <li class="kui-picker__td" style="height: 44px;">08</li>
+          <li class="kui-picker__td" style="height: 44px;">09</li>
+          <li class="kui-picker__td" style="height: 44px;">10</li>
+          <li class="kui-picker__td" style="height: 44px;">11</li>
+          <li class="kui-picker__td" style="height: 44px;">12</li>
+        </ul>
+      </div>
+      <div class="kui-picker__tr" style="height: 220px;">
+        <ul style="transition: 500ms; transform: translate3d(0px, 0px, 0px); line-height: 44px;">
+          <li class="kui-picker__td" style="height: 44px;">01 周一</li>
+          <li class="kui-picker__td" style="height: 44px;">02 周二</li>
+          <li class="kui-picker__td kui-picker__selected" style="height: 44px;">03 周三
+          </li>
+          <li class="kui-picker__td" style="height: 44px;">04 周四</li>
+          <li class="kui-picker__td" style="height: 44px;">05 周五</li>
+          <li class="kui-picker__td" style="height: 44px;">06</li>
+          <li class="kui-picker__td" style="height: 44px;">07</li>
+          <li class="kui-picker__td" style="height: 44px;">08</li>
+          <li class="kui-picker__td" style="height: 44px;">09</li>
+          <li class="kui-picker__td" style="height: 44px;">10</li>
+          <li class="kui-picker__td" style="height: 44px;">11</li>
+          <li class="kui-picker__td" style="height: 44px;">12</li>
+          <li class="kui-picker__td" style="height: 44px;">13</li>
+          <li class="kui-picker__td" style="height: 44px;">14</li>
+          <li class="kui-picker__td" style="height: 44px;">15</li>
+          <li class="kui-picker__td" style="height: 44px;">16</li>
+          <li class="kui-picker__td" style="height: 44px;">17</li>
+          <li class="kui-picker__td" style="height: 44px;">18</li>
+          <li class="kui-picker__td" style="height: 44px;">19</li>
+          <li class="kui-picker__td" style="height: 44px;">20</li>
+          <li class="kui-picker__td" style="height: 44px;">21</li>
+          <li class="kui-picker__td" style="height: 44px;">22</li>
+          <li class="kui-picker__td" style="height: 44px;">23</li>
+          <li class="kui-picker__td" style="height: 44px;">24</li>
+          <li class="kui-picker__td" style="height: 44px;">25</li>
+          <li class="kui-picker__td" style="height: 44px;">26</li>
+          <li class="kui-picker__td" style="height: 44px;">27</li>
+          <li class="kui-picker__td" style="height: 44px;">28</li>
+          <li class="kui-picker__td" style="height: 44px;">29</li>
+          <li class="kui-picker__td" style="height: 44px;">30</li>
+        </ul>
+      </div>
+      <div class="kui-picker__tr" style="height: 220px;">
+        <ul style="transition: 500ms; transform: translate3d(0px, 88px, 0px); line-height: 44px;">
+          <li class="kui-picker__td kui-picker__selected" style="height: 44px;">时辰未知
+          </li>
+          <li class="kui-picker__td" style="height: 44px;">00</li>
+          <li class="kui-picker__td" style="height: 44px;">01</li>
+          <li class="kui-picker__td" style="height: 44px;">02</li>
+          <li class="kui-picker__td" style="height: 44px;">03</li>
+          <li class="kui-picker__td" style="height: 44px;">04</li>
+          <li class="kui-picker__td" style="height: 44px;">05</li>
+          <li class="kui-picker__td" style="height: 44px;">06</li>
+          <li class="kui-picker__td" style="height: 44px;">07</li>
+          <li class="kui-picker__td" style="height: 44px;">08</li>
+          <li class="kui-picker__td" style="height: 44px;">09</li>
+          <li class="kui-picker__td" style="height: 44px;">10</li>
+          <li class="kui-picker__td" style="height: 44px;">11</li>
+          <li class="kui-picker__td" style="height: 44px;">12</li>
+          <li class="kui-picker__td" style="height: 44px;">13</li>
+          <li class="kui-picker__td" style="height: 44px;">14</li>
+          <li class="kui-picker__td" style="height: 44px;">15</li>
+          <li class="kui-picker__td" style="height: 44px;">16</li>
+          <li class="kui-picker__td" style="height: 44px;">17</li>
+          <li class="kui-picker__td" style="height: 44px;">18</li>
+          <li class="kui-picker__td" style="height: 44px;">19</li>
+          <li class="kui-picker__td" style="height: 44px;">20</li>
+          <li class="kui-picker__td" style="height: 44px;">21</li>
+          <li class="kui-picker__td" style="height: 44px;">22</li>
+          <li class="kui-picker__td" style="height: 44px;">23</li>
+        </ul>
+      </div>
+      <div class="kui-picker__frame" style="height: 44px;"></div>
+    </div>
+  </div>
+</div>-->
+
+</body>
+<script src="lunarCalendar.js"></script>
+<script>
+  (function (global, factory) {
+    "use strict";
+    if (typeof module === "object" && typeof module.exports === "object") {
+      module.exports = factory(global, true);
+    } else if (typeof define === "function" && define.amd) {
+      define(function () {
+        return factory(global, true);
+      });
+    } else {
+      factory(global);
+    }
+  }(typeof window !== "undefined" ? window : this, function (wow, bool) {
+    // 默认配置
+    var defaults = {
+      // 当前日期
+      date: new Date()
+      // 当前日期
+      , today: null
+      // 当前阳历年
+      , cYear: null
+      // 当前阳历月
+      , cMonth: null
+      // 当前阳历日
+      , cDay: null
+      // 当农历年
+      , lYear: null
+      // 当农历月
+      , IMonthCn: null
+      // 当农历日
+      , IDayCn: null
+      // 生肖
+      , Animal: null
+      // 干支年
+      , gzYear: null
+      // 干支月
+      , gzMonth: null
+      // 干支天
+      , gzDay: null
+      // 是否时今天
+      , isToday: null
+      // 是否闰年
+      , isLeap: null
+      // 当日星期几，数字星期几
+      , nWeek: null
+      // 当日星期几，中文星期几
+      , ncWeek: null
+      // 是否是节气
+      , isTerm: null
+      // 节气
+      , Term: null
+      // 星座
+      , astro: null
+      // 当月总天数
+      , dayTotal: null
+      // 当月第一天星期几
+      , startWeek: null
+      // 当月最后一天星期几
+      , lastWeek: null
+      // 上月的日期
+      , prevDate: null
+      // 上月的年
+      , prevYear: null
+      // 上一月
+      , prevMonth: null
+      // 上月总天数
+      , prevDayTotal: null
+      // 上月最后一天星期几
+      , prevLastWeek: null
+      // 下月的日期
+      , nextDate: null
+      // 下月的年
+      , nextYear: null
+      // 下一月
+      , nextMonth: null
+      // 下一月的总天数
+      , nextDayTotal: null
+      // 下月第一天星期几
+      , nextStartWeek: null
+      , jsname: 'Calender'
+      , index: 1
+      , attribute: 'data-id'
+      , cache: {}
+      // 数字转中文速查表 {0: "零", 1: "一", 2: "二", 3: "三", 4: "四", 5: "五", 6: "六", 7: "七", 8: "八", 9: "九"}
+      , toChineseNum: { 0: "\u96f6", 1: "\u4e00", 2: "\u4e8c", 3: "\u4e09", 4: "\u56db", 5: "\u4e94", 6: "\u516d", 7: "\u4e03", 8: "\u516b", 9: "\u4e5d" }
+      // weekLsit 星期 {1: "一", 2: "二", 3: "三", 4: "四", 5: "五", 6: "六", 7: "日"}
+      , weekLsit: { 1: "\u4e00", 2: "\u4e8c", 3: "\u4e09", 4: "\u56db", 5: "\u4e94", 6: "\u516d", 0: "\u65e5" },
+      // 取消 cancel
+      cancelTxt: '\u53d6\u6d88'
+      // 公历
+      , solarTxt: '\u516c\u5386'
+      // 农历
+      , lunarTxt: '\u519c\u5386'
+      // 确认
+      , sureTxt: '\u786e\u8ba4'
+      // 年
+      , yearTxt: '\u5e74'
+      // 月
+      , monthTxt: '\u6708'
+      // 日
+      , dayTxt: '\u65e5'
+      // 时
+      , hourTxt: '\u65f6'
+      // 周
+      , weekTxt: '\u5468'
+      , klass: {
+        container: 'kui-picker',
+        cancel: 'kui-picker__cancel',
+        sure: 'kui-picker__sure',
+        solar: 'kui-picker__solar',
+        lunar: 'kui-picker__lunar',
+        frame: 'kui-picker__frame',
+        allYear: 'kui-picker__allYear',
+        allMonth: 'kui-picker__allMonth',
+        allDay: 'kui-picker__allDay',
+        allHour: 'kui-picker__allHour',
+      }
+      , el_container: null
+      , el_cancel: null
+      , el_sure: null
+      , el_solar: null
+      , el_lunar: null
+      , el_frame: null
+      , el_allYear: null
+      , el_allMonth: null
+      , el_allDay: null
+      , el_allHour: null
+
+      , touchstart: 'touchstart'
+      , touchmove: 'touchmove'
+      , touchend: 'touchend'
+
+      , webkitTransform: '-webkit-transform'
+      , mozTransform: '-moz-transform'
+      , msTransform: '-ms-transform'
+      , oTransform: '-o-transform'
+
+      , transformList: ['transform', '-webkit-transform', '-moz-transform', '-ms-transform', '-o-transform']
+      , boxHeight: 220
+      , stepSiae: 44
+      , stepTime: 500
+
+    };
+
+    var Calender = function (options) {
+      var that = this;
+      var config = that.extend(defaults, JSON.parse(JSON.stringify(options || {})));
+      that.extend(that, config);
+      that.getParam();
+      that.init();
+      defaults.index++;
+      console.log(that);
+    };
+
+    Calender.prototype = {
+      extend: function (src, obj) {
+        src = src || {};
+        obj = obj || {};
+        for (var k in obj) {
+          if (obj.hasOwnProperty(k) && obj[k]) src[k] = obj[k];
+        }
+        return src;
+      },
+
+      $: function (selector) {
+        var elems = document.querySelectorAll(selector);
+        return (elems && elems.length > 0) ? elems.length === 1 ? elems[0] : elems : null;
+      },
+
+      on: function (elems, callback) {
+        if (!elems.length) {
+          elems = [elems];
+        }
+        elems.forEach(el => {
+          if (el) el.addEventListener ? el.addEventListener('click', callback, false) : el.attachEvent ? el.attachEvent('onclick', callback) : null;
+        });
+      },
+
+      toDate: function (date, year, month, day) {
+        if (date) {
+          if (typeof date === 'string') date = date.replace(/\-/g, '/').replace(/T/g, ' ').replace(/\.+[0-9]+[A-Z]$/, '');
+        } else if (year && month >= 0) date = new Date(year, month, day || 1);
+        return date ? new Date(date) : new Date();
+      },
+
+      isLeap: function (year) {
+        return year % 4 === 0 ? (year % 100 !== 0 || year % 400 === 0) ? true : false : false;
+      },
+
+      getDayTotal: function (y, m) {
+        var n = 31;
+        switch (m) {
+          case 2:
+            n = this.isLeap(y) ? 29 : 28;
+            break;
+          case 4:
+          case 6:
+          case 9:
+          case 11:
+            n = 30;
+            break;
+        }
+        return n;
+      },
+
+      getParam: function (currentDate) {
+        var that = this;
+        var o = {};
+        var date = that.toDate(currentDate || that.date);
+        var year = date.getFullYear();
+        var month = date.getMonth();
+        var day = date.getDate();
+        var lunarDate = LunarCalendar.solar2lunar(year, month, day) || {};
+
+        o.date = date;
+        o.today = date;
+        o.dayTotal = that.getDayTotal(year, month + 1);
+
+        that.extend(that, o);
+        that.extend(that, lunarDate);
+      },
+
+      createElem: function (tag, options) {
+        return this.extend(document.createElement(tag || 'div'), options);
+      },
+
+      getElemId: function (id, index) {
+        return id + (index || this.index);
+      },
+
+      init: function () {
+        var that = this;
+        that.createBox();
+        that.view();
+        that.getElements();
+        that.bindEvent();
+      },
+
+      createBox: function () {
+        var that = this;
+        var klass = that.klass;
+        var el = that.createElem('', {
+          'id': that.getElemId(klass.container),
+          'className': klass.container,
+          // 'innerHTML': html
+        });
+        that.$container = el;
+        document.body && document.body.appendChild(el);
+      },
+
+      view: function () {
+        var that = this;
+        var yearHTML = that.yearHTML();
+        var monthHTML = that.monthHTML();
+        var dayHTML = that.dayHTML();
+        var hourHTML = that.hourHTML();
+        var klass = that.klass;
+        var boxH = that.boxHeight + 'px';
+        var stepT = that.stepTime;
+        var html =
+          // '<div class="kui-picker">' +
+          '  <div class="kui-picker__shade"></div>' +
+          '  <div class="kui-picker__panel kuiPickerFromBottomToUp">' +
+
+          '    <div class="kui-picker__toolbar">' +
+          '      <div class="kui-picker__btns" id="' + that.getElemId(klass.cancel) + '">\u53d6\u6d88</div>' +
+          '      <div class="kui-picker__btns">' +
+          '        <span style="color: #f60;" id="' + that.getElemId(klass.solar) + '">\u516c\u5386</span>' +
+          '        <span id="' + that.getElemId(klass.lunar) + '">\u519c\u5386</span>' +
+          '      </div>' +
+          '      <div class="kui-picker__btns" id="' + that.getElemId(klass.sure) + '">\u786e\u8ba4</div>' +
+          '    </div>' +
+
+          '    <div class="kui-picker__tb" style="height:' + boxH + '">' +
+          '      <div class="kui-picker__tr" style="height:' + boxH + '">' +
+          '        <ul id="' + that.getElemId(klass.allYear) + '" style="transition: ' + stepT + 'ms; transform: translate3d(0px, 0px, 0px); line-height: 44px;">' + yearHTML + '</ul>' +
+          '      </div>' +
+
+          '      <div class="kui-picker__tr" style="height:' + boxH + '">' +
+          '        <ul id="' + that.getElemId(klass.allMonth) + '" style="transition: ' + stepT + 'ms; transform: translate3d(0px, 0px, 0px); line-height: 44px;">' + monthHTML + '</ul>' +
+          '      </div>' +
+
+          '      <div class="kui-picker__tr" style="height:' + boxH + '">' +
+          '        <ul id="' + that.getElemId(klass.allDay) + '" style="transition: ' + stepT + 'ms; transform: translate3d(0px, 0px, 0px); line-height: 44px;">' + dayHTML + '</ul>' +
+          '      </div>' +
+
+          '      <div class="kui-picker__tr" style="height:' + boxH + '">' +
+          '        <ul id="' + that.getElemId(klass.allHour) + '" style="transition: ' + stepT + 'ms; transform: translate3d(0px, 0px, 0px); line-height: 44px;">' + hourHTML + '</ul>' +
+          '      </div>' +
+
+          '      <div class="kui-picker__frame" id="' + that.getElemId(klass.frame) + '" style="height: 44px;"></div>' +
+          '    </div>' +
+          '  </div>'
+          // + '</div>'
+          ;
+
+        that.$container.innerHTML = html;
+      },
+
+      yearHTML: function () {
+        var that = this;
+        var today = that.today;
+        var year = today.getFullYear();
+        var rc = [];
+        for (var i = 1970; i < year; i++) {
+          rc.push('<li class="kui-picker__td" style="height: 44px;">' + i + that.yearTxt + '</li>');
+        }
+        return rc.join('');
+      },
+
+      monthHTML: function () {
+        var rc = [];
+        for (var i = 1; i < 13; i++) {
+          rc.push('<li class="kui-picker__td" style="height: 44px;">' + i + this.monthTxt + '</li>');
+        }
+        return rc.join('');
+      },
+
+      dayHTML: function () {
+        var that = this;
+        var year = that.today.getFullYear();
+        var month = that.today.getMonth();
+        var total = this.getDayTotal(year, month);
+        var rc = [];
+        var d;
+        for (var i = 0; i < total; i++) {
+          d = new Date(new Date(that.today).setDate(i));
+          rc.push('<li class="kui-picker__td" style="height: 44px;">' + i + ' ' + that.weekTxt + that.weekLsit[d.getDay()] + '</li>');
+        }
+        return rc.join('');
+      },
+
+      hourHTML: function () {
+        var rc = [];
+        for (var i = 0; i < 23; i++) {
+          rc.push('<li class="kui-picker__td" style="height: 44px;">' + i + this.hourTxt + '</li>');
+        }
+        return rc.join('');
+      },
+
+      touchStart: function (e, parent) {
+        var that = this;
+        e.preventDefault();
+        var target = e.target || parent;
+        // 滑动锁
+        target._lock = false;
+        target._startY = e.changedTouches[0].clientY;
+        target._startTime = new Date().getTime();
+        console.log('_startY,_startTime', target._startY, target._startTime);
+      },
+      //手指移动
+      touchMove: function (e, parent) {
+        var that = this;
+        e.preventDefault();
+        var target = e.target || parent;
+        // 滑动锁
+        target._lock = true;
+        target._moveY = e.changedTouches[0].clientY;
+        target._moveTime = new Date().getTime();
+        console.log('_moveY,_moveTime', target._moveY, target._moveTime);
+        that.easing(target, parent);
+        // that.setStyle(parent, that.transformList, 'translate3d(0px,' + y + 'px,0px)');
+      },
+
+      touchEnd: function (e, parent) {
+        var that = this;
+        e.preventDefault();
+        var target = e.target || parent;
+        target._endY = e.changedTouches[0].clientY;
+        target._endTime = new Date().getTime();
+        console.log('_endY,_endTime', target._lock, target._endY, target._endTime);
+
+        if (!target._lock) return false;
+
+        var y = target._endY - target._startY;
+        // that.setStyle(parent, that.transformList, 'translate3d(0px,' + y + 'px,0px)');
+      },
+
+      easing: function (target, parent) {
+        var that = this;
+        var y = target._moveY - target._startY;
+        // 判断方向
+        if (y >= 0) {
+          // 向下
+          target._direction = 1;
+          y = Math.floor(y / 44) * 44;
+          y = y >= 88 ? 88 : y;
+        } else {
+          // 向上
+          target._direction = -1;
+          y = Math.floor(y / 44) * 44;
+          console.log('parent', parent);
+          console.log('parent', parent.offsetHeight);
+        }
+
+        console.log('_direction', target._direction);
+        // if (1012 - y - 220 === 0) return;
+
+        that.setStyle(parent, that.transformList, 'translate3d(0px,' + y + 'px,0px)');
+      },
+
+      setStyle: function (el, list, val) {
+        if (!el || !list || !val) return;
+        if (typeof list === 'object' && list.length) {
+          list.forEach(function (k) {
+            el.style[k] = val;
+          });
+        } else {
+          el.style[list] = val;
+        }
+      },
+
+      getElements: function () {
+        var that = this;
+        var klass = that.klass;
+        var index = that.index;
+        var element;
+        for (var key in klass) {
+          if (klass.hasOwnProperty(key) && klass[key]) {
+            element = klass[key];
+            that['el_' + element] = that.$('#' + element + index);
+          }
+        }
+      },
+
+      bindEvent: function () {
+        var that = this;
+        var klass = that.klass;
+        var index = that.index;
+
+        ["allYear", "allMonth", "allDay", "allHour"].forEach(function (el) {
+          el = that['el_' + klass[el]];
+          console.log('el', el);
+          if (!el) return;
+          el.addEventListener('touchstart', function (e) { that.touchStart(e, el) });
+          el.addEventListener('touchmove', function (e) { that.touchMove(e, el) });
+          el.addEventListener('touchend', function (e) { that.touchEnd(e, el) });
+        });
+      },
+    };
+
+    return wow[defaults.jsname] = {
+      open: function (options) {
+        return new Calender(options);
+      }
+    }
+  }));
+</script>
+<script>
+  Calender.open();
+</script>
