@@ -1,17 +1,20 @@
 {
-  "name": "nkoa",
+  "name": "staticserve",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "./node_modules/.bin/babel src -d lib"
+    "build": "./node_modules/.bin/babel src -d lib",
+    "start": "node lib/app"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "koa": "^2.7.0",
     "koa-cors": "^0.0.16",
-    "koa-static": "^5.0.0",
+    "koa-static": "^5.0.0"
+  },
+  "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
@@ -22,6 +25,10 @@
     "babel-register": "^6.26.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0",
+    "gulp-uglify-es": "^1.0.1",
+    "regenerator-runtime": "^0.11.1",
     "uglify-es": "^3.3.9"
   }
 }
