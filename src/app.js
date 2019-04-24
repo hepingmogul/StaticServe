@@ -33,10 +33,10 @@ function getip() {
 }
 
 async function main() {
-  const port = process.env.PORT || 3000;
-  const host = process.env.HOST || '127.0.0.1';
+  const port = /* process.env.PORT || */ 3032
+  const host = process.env.HOST || '';
 
-  console.log(`koa start on port: http://${host}:${port}`);
+  console.log(`koa start on port: http://127.0.0.1:${port}`);
   console.log(`koa start on port: http://${getip()}:${port}`);
 
   return new Promise((resolve, reject) => app.listen(port, host, resolve).on('error', reject));
