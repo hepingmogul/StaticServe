@@ -20,7 +20,8 @@ app.use(cors());
 
 // 静态文件，默认响应
 // app.use(staticFile(path.join(__dirname, '../public')));
-app.use(staticFile('F:/songTech/face_spread'));
+// app.use(staticFile('F:/test/bootstrap-admin'));
+app.use(staticFile('F:/songTech/face_spread/dist'));
 
 // 获取本机IP
 function getip() {
